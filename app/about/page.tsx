@@ -2,7 +2,8 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight, GraduationCap, Briefcase } from "lucide-react";
+import { ExperienceTimeline } from "@/components/experience-timeline";
 
 export default function AboutPage() {
     return (
@@ -31,14 +32,14 @@ export default function AboutPage() {
                                 Let's Talk <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
                         </Link>
-                        <Link href="/experience">
-                            <Button variant="outline" className="rounded-full px-8">
-                                View Experience
-                            </Button>
-                        </Link>
                         <a href="/Hardware Systems Engineer.pdf" target="_blank" rel="noopener noreferrer">
-                            <Button variant="ghost" className="rounded-full px-8">
+                            <Button variant="outline" className="rounded-full px-8">
                                 Download CV
+                            </Button>
+                        </a>
+                        <a href="#experience">
+                            <Button variant="ghost" className="rounded-full px-8">
+                                View Experience <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
                         </a>
                     </div>
@@ -85,6 +86,14 @@ export default function AboutPage() {
                         </ul>
                     </div>
                 </div>
+            </div>
+
+            {/* Experience Section */}
+            <div className="max-w-4xl mx-auto mt-20 pt-20 border-t border-border/50" id="experience">
+                <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
+                    <Briefcase className="text-primary" /> Professional Experience
+                </h3>
+                <ExperienceTimeline />
             </div>
         </div>
     );
