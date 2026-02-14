@@ -3,7 +3,8 @@ import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, GraduationCap, Briefcase } from "lucide-react";
-import { ExperienceTimeline } from "@/components/experience-timeline";
+import { EducationCards } from "@/components/education-cards";
+import { ExperienceCards } from "@/components/experience-cards";
 
 export default function AboutPage() {
     return (
@@ -57,43 +58,25 @@ export default function AboutPage() {
                 </div>
             </div>
 
-            {/* Education Section */}
-            <div className="max-w-4xl mx-auto">
-                <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-                    <GraduationCap className="text-primary" /> Education
-                </h3>
-                <div className="space-y-8">
-                    <div className="border-l-2 border-primary/20 pl-8 relative">
-                        <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-primary" />
-                        <h4 className="text-xl font-bold">National Taipei University of Technology (NTUT)</h4>
-                        <p className="text-primary">Master of Science in Electrical Engineering</p>
-                        <p className="text-sm text-muted-foreground mb-2">Taipei, Taiwan | Feb 2021 – Jan 2023</p>
-                        <ul className="list-disc list-outside ml-4 text-muted-foreground space-y-1">
-                            <li><strong>Thesis:</strong> "Noise Reduction Using Non-negative Matrix Factorization with Distributive Penalties on Singing Voices Extracted from RPCA and REpet."</li>
-                            <li><strong>Awards:</strong> 2021–2023 Taipei Tech International Student Scholarship.</li>
-                            <li><strong>Grant:</strong> 2021–2023 SVS Project Research Grant, Systems and Control Lab.</li>
-                        </ul>
+            {/* Education & Experience Section - Side by Side */}
+            <div className="max-w-7xl mx-auto" id="experience">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+                    {/* Education Column */}
+                    <div>
+                        <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                            <GraduationCap className="text-primary" /> Education
+                        </h3>
+                        <EducationCards />
                     </div>
 
-                    <div className="border-l-2 border-primary/20 pl-8 relative">
-                        <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-background border-2 border-primary" />
-                        <h4 className="text-xl font-bold">Indian Institute of Technology, Ropar (IIT Ropar)</h4>
-                        <p className="text-primary">Bachelor of Science in Electrical Engineering</p>
-                        <p className="text-sm text-muted-foreground mb-2">Punjab, India | April 2016 – August 2020</p>
-                        <ul className="list-disc list-outside ml-4 text-muted-foreground space-y-1">
-                            <li><strong>Thesis:</strong> "nRF52-Based BLE Mesh Networking for Tracking Moving Machines, Robots, and Personnel on Shop Floor"</li>
-                            <li><strong>Achievements:</strong> Scored Top 20 Percentile in JEE Mains and Advanced (2020).</li>
-                        </ul>
+                    {/* Experience Column */}
+                    <div>
+                        <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                            <Briefcase className="text-primary" /> Professional Experience
+                        </h3>
+                        <ExperienceCards />
                     </div>
                 </div>
-            </div>
-
-            {/* Experience Section */}
-            <div className="max-w-4xl mx-auto mt-20 pt-20 border-t border-border/50" id="experience">
-                <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-                    <Briefcase className="text-primary" /> Professional Experience
-                </h3>
-                <ExperienceTimeline />
             </div>
         </div>
     );
