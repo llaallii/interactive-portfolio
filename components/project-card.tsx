@@ -35,12 +35,8 @@ export function ProjectCard({
     duration,
     featured 
 }: ProjectCardProps) {
-    const CardWrapper = slug ? Link : "div"
-    const cardProps = slug ? { href: `/projects/${slug}` } : {}
-
-    return (
-        <CardWrapper {...cardProps} className="block">
-            <Card className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:bg-card hover:shadow-lg h-full flex flex-col">
+    const cardContent = (
+        <Card className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:bg-card hover:shadow-lg h-full flex flex-col">
                 <div className="relative aspect-video overflow-hidden bg-muted">
                     {image ? (
                         <Image
@@ -147,6 +143,15 @@ export function ProjectCard({
                     </CardFooter>
                 )}
             </Card>
-        </CardWrapper>
     )
+
+    if (slug) {
+        return (
+            <Link href={`/projects/${slug}`} className="block">
+                {cardContent}
+            </Link>
+        )
+    }
+
+    return cardContent
 }
