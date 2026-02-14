@@ -1,0 +1,173 @@
+---
+title: "Elexy Power Unit - Medical Device Validation"
+date: "2023-06-15"
+category: "Industrial"
+tags: ["Medical Device", "Validation", "Electromechanical", "Safety-Critical", "IEC 62304", "ISO 13485"]
+excerpt: "End-to-end validation for an electromechanical autoinjector. Ensured 100% requirements-to-test traceability for safety-critical electrical performance, timing behavior, and automated injection logic."
+featured: true
+published: true
+image: "/images/electronics-exploded.png"
+role: "Hardware Systems Engineer - Validation Lead"
+duration: "Jan 2023 - Jun 2023"
+client: "Medical Device Manufacturer (Confidential)"
+status: "Completed"
+technologies: ["IEC 62304", "ISO 13485", "Test Automation", "Python", "Requirements Traceability", "Risk Management"]
+metrics: 
+  - "100% requirements-to-test traceability achieved"
+  - "Zero critical defects in production release"
+  - "Reduced validation cycle time by 40%"
+links:
+  github: ""
+  demo: ""
+  documentation: ""
+---
+
+## Project Overview
+
+The Elexy Power Unit project involved comprehensive validation of a safety-critical electromechanical autoinjector for medical applications. As the validation lead, I was responsible for ensuring complete requirements-to-test traceability and validating electrical performance, timing behavior, and automated injection logic according to medical device standards.
+
+## Challenge
+
+Medical device validation presents unique challenges:
+
+- **Regulatory Compliance**: Must meet stringent IEC 62304 and ISO 13485 standards
+- **Safety-Critical System**: Any failure could endanger patient safety
+- **Complex Integration**: Hardware, firmware, and mechanical systems working in harmony
+- **Traceability Requirements**: Every requirement must be linked to specific test cases
+- **Time Constraints**: Tight timeline to support production ramp schedule
+
+The autoinjector required precise electrical timing, reliable motor control, and fail-safe mechanisms—all validated to medical device standards.
+
+## My Role & Responsibilities
+
+As **Hardware Systems Engineer - Validation Lead**, I:
+
+- Developed comprehensive validation strategy and test plans
+- Created requirements traceability matrix (RTM) linking all requirements to test cases
+- Designed and executed electrical performance test protocols
+- Validated timing-critical injection sequences and safety mechanisms
+- Automated repetitive test procedures using Python
+- Collaborated with firmware, mechanical, and quality teams
+- Documented all validation activities per ISO 13485 requirements
+- Supported regulatory submission with validation evidence
+
+## Technical Approach
+
+### Requirements Analysis & Traceability
+
+I established a comprehensive traceability system:
+
+```python
+# Example: Automated Requirements Traceability Check
+import pandas as pd
+
+def validate_rtm_coverage(requirements_df, test_cases_df):
+    """Ensure every requirement has at least one test case"""
+    
+    req_ids = set(requirements_df['req_id'])
+    tested_reqs = set(test_cases_df['req_id'])
+    
+    untested = req_ids - tested_reqs
+    coverage = (len(tested_reqs) / len(req_ids)) * 100
+    
+    return {
+        'coverage_percent': coverage,
+        'untested_requirements': list(untested),
+        'total_requirements': len(req_ids),
+        'tested_requirements': len(tested_reqs)
+    }
+
+# Automated daily coverage reports
+rtm_status = validate_rtm_coverage(requirements, test_cases)
+print(f"Current RTM Coverage: {rtm_status['coverage_percent']:.1f}%")
+```
+
+### Electrical Performance Validation
+
+Key electrical parameters validated:
+
+- **Power Delivery**: Voltage regulation, current limits, battery performance
+- **Motor Control**: BLDC motor timing, torque characteristics, stall detection
+- **Sensor Accuracy**: Position sensors, force sensors, temperature monitoring
+- **Safety Circuits**: Over-current protection, thermal shutdown, fault detection
+
+### Timing Validation
+
+Critical timing sequences verified:
+
+1. Injection initiation response time
+2. Motor acceleration profiles
+3. Safety timeout mechanisms
+4. User interface response latency
+5. Emergency stop reaction time
+
+Used high-speed data acquisition systems to capture microsecond-level timing data.
+
+### Test Automation
+
+Automated test framework benefits:
+
+- **Repeatability**: Eliminated manual test variation
+- **Speed**: 40% reduction in validation cycle time
+- **Data Collection**: Automatic logging and analysis
+- **Coverage**: Enabled exhaustive edge case testing
+
+## Key Technologies Used
+
+- **Standards Compliance**: IEC 62304, ISO 13485, ISO 14971 (Risk Management)
+- **Test Equipment**: Oscilloscopes, power analyzers, environmental chambers
+- **Automation**: Python, LabVIEW for test automation
+- **Documentation**: Requirements management tools, test management systems
+- **Data Analysis**: Statistical process control, capability analysis
+
+## Results & Impact
+
+### Quantitative Outcomes
+
+✅ **100% Requirements Traceability**: Every requirement linked to validated test cases  
+✅ **Zero Critical Defects**: No safety-critical issues found in production  
+✅ **40% Faster Validation**: Automation reduced cycle time from 15 weeks to 9 weeks  
+✅ **Regulatory Success**: Validation package approved on first submission  
+
+### Qualitative Impact
+
+- **Enhanced Product Safety**: Rigorous validation protected patient safety
+- **Accelerated Time-to-Market**: Efficient validation supported production timeline
+- **Knowledge Transfer**: Created reusable validation framework for future projects
+- **Cross-Functional Collaboration**: Strengthened relationships between engineering disciplines
+
+## Lessons Learned
+
+1. **Early Involvement**: Validation planning during design phase prevents rework
+2. **Automation Investment**: Upfront automation effort pays dividends in cycle time
+3. **Clear Communication**: Regular cross-functional updates prevent surprises
+4. **Risk-Based Approach**: Focus resources on highest-risk features first
+5. **Documentation Discipline**: Good records during testing save time during regulatory review
+
+## Technical Challenges Overcome
+
+### Challenge 1: Timing Variability
+
+**Problem**: Injection timing varied beyond acceptable limits  
+**Solution**: Implemented DOE (Design of Experiments) to identify root cause—battery voltage variation  
+**Result**: Added voltage compensation algorithm, reduced timing variance by 75%
+
+### Challenge 2: Environmental Stress
+
+**Problem**: Performance degradation at temperature extremes  
+**Solution**: Designed comprehensive environmental test matrix, identified thermal compensation needs  
+**Result**: Successfully validated performance across full operating range (-20°C to +50°C)
+
+## Conclusion
+
+The Elexy Power Unit validation project demonstrated the critical importance of systematic validation in medical device development. Through comprehensive planning, automation, and cross-functional collaboration, we achieved 100% traceability and delivered a safe, reliable product on schedule.
+
+This project reinforced my expertise in:
+- Medical device regulatory requirements
+- Safety-critical systems validation
+- Test automation and data analysis
+- Cross-functional technical leadership
+
+---
+
+*Note: Specific technical details and client information have been generalized to protect confidential information.*

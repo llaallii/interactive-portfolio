@@ -5,25 +5,10 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { ProjectCard } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
-
-const featuredProjects = [
-  {
-    title: "Elexy Power Unit",
-    description: "End-to-end validation for an electromechanical autoinjector. Ensured 100% requirements-to-test traceability.",
-    tags: ["Validation", "Medical Device", "Safety-Critical"],
-    image: "/images/electronics-exploded.png",
-    links: {},
-  },
-  {
-    title: "SmartHub",
-    description: "BLE data collector for connected health devices. Led system-level integration from prototyping to production.",
-    tags: ["BLE", "IoT", "System Integration"],
-    image: "/images/iot-system-diagram.png",
-    links: {},
-  },
-];
+import { getFeaturedProjects } from "@/lib/projects";
 
 export default function Home() {
+  const featuredProjects = getFeaturedProjects();
   return (
     <div className="flex flex-col">
       <Hero />
@@ -80,8 +65,20 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {featuredProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+            {featuredProjects.map((project) => (
+              <ProjectCard 
+                key={project.slug} 
+                slug={project.slug}
+                title={project.title}
+                description={project.excerpt}
+                tags={project.tags}
+                image={project.image}
+                links={project.links}
+                category={project.category}
+                role={project.role}
+                duration={project.duration}
+                featured={project.featured}
+              />
             ))}
           </div>
 
