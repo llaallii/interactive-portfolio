@@ -1,0 +1,138 @@
+---
+title: "Getting Started with BLE Development on nRF52"
+date: "2024-02-10"
+category: "Tutorial"
+tags: ["BLE", "nRF52", "Embedded", "IoT"]
+excerpt: "A comprehensive guide to Bluetooth Low Energy development using Nordic's nRF52 platform, covering everything from basic concepts to practical implementation."
+image: "/images/circuit-board-closeup.png"
+published: true
+---
+
+Bluetooth Low Energy (BLE) has become the go-to wireless protocol for IoT and wearable devices. In this tutorial, we'll explore how to get started with BLE development using Nordic Semiconductor's nRF52 platform.
+
+## Why BLE?
+
+BLE offers several advantages for embedded systems:
+
+- **Low Power Consumption**: Devices can run for years on coin cell batteries
+- **Wide Compatibility**: Supported by all modern smartphones and computers
+- **Flexible Data Rates**: Supports various throughput requirements
+- **Proven Security**: Built-in encryption and authentication
+
+## Understanding the BLE Stack
+
+Before diving into code, let's understand the BLE protocol stack:
+
+### Physical Layer
+
+The physical layer operates in the 2.4 GHz ISM band, using 40 channels with 2 MHz spacing. BLE uses Gaussian Frequency Shift Keying (GFSK) modulation.
+
+### Link Layer
+
+The link layer handles:
+- Advertising and scanning
+- Connection establishment
+- Data channel management
+- Encryption
+
+### Generic Access Profile (GAP)
+
+GAP defines device roles and procedures for device discovery and connection.
+
+### Generic Attribute Profile (GATT)
+
+GATT structures data exchange using:
+- **Services**: Collections of related characteristics
+- **Characteristics**: Data values with properties (read, write, notify)
+- **Descriptors**: Metadata about characteristics
+
+## Setting Up Your Development Environment
+
+First, install the required tools:
+
+```bash
+# Install nRF Command Line Tools
+brew install --cask nordic-nrf-command-line-tools
+
+# Install the nRF Connect SDK
+pip install west
+west init -m https://github.com/nrfconnect/sdk-nrf nrf
+cd nrf && west update
+```
+
+## Creating Your First BLE Application
+
+Let's create a simple BLE peripheral that exposes a custom service:
+
+```c
+#include <zephyr/kernel.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/gatt.h>
+
+// Custom service UUID
+#define BT_UUID_CUSTOM_SERVICE \
+    BT_UUID_DECLARE_128(0x12, 0x34, 0x56, 0x78, 0x90, 0xab, \
+                        0xcd, 0xef, 0x12, 0x34, 0x56, 0x78, \
+                        0x90, 0xab, 0xcd, 0xef)
+
+static uint8_t sensor_value = 0;
+
+// Read callback
+static ssize_t read_sensor(struct bt_conn *conn,
+                           const struct bt_gatt_attr *attr,
+                           void *buf, uint16_t len, uint16_t offset)
+{
+    return bt_gatt_attr_read(conn, attr, buf, len, offset,
+                             &sensor_value, sizeof(sensor_value));
+}
+
+// Service definition
+BT_GATT_SERVICE_DEFINE(custom_svc,
+    BT_GATT_PRIMARY_SERVICE(BT_UUID_CUSTOM_SERVICE),
+    BT_GATT_CHARACTERISTIC(BT_UUID_CUSTOM_CHAR,
+                          BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
+                          BT_GATT_PERM_READ,
+                          read_sensor, NULL, &sensor_value),
+);
+
+void main(void)
+{
+    int err = bt_enable(NULL);
+    if (err) {
+        printk("Bluetooth init failed (err %d)\n", err);
+        return;
+    }
+
+    printk("Bluetooth initialized\n");
+
+    // Start advertising
+    err = bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad),
+                          sd, ARRAY_SIZE(sd));
+    if (err) {
+        printk("Advertising failed to start (err %d)\n", err);
+    }
+}
+```
+
+## Power Optimization Tips
+
+To achieve optimal battery life:
+
+1. **Use connection parameters wisely** - Longer intervals save power
+2. **Implement sleep modes** - Use system-off when not advertising
+3. **Minimize advertising frequency** - Balance discoverability vs power
+4. **Batch data transfers** - Send data in bursts rather than continuously
+
+## Testing Your BLE Device
+
+Use tools like:
+
+- **nRF Connect Mobile** - Comprehensive BLE scanner and debugger
+- **LightBlue** - Simple iOS/Android BLE explorer
+- **Wireshark with nRF Sniffer** - Packet-level analysis
+
+## Conclusion
+
+BLE development on nRF52 provides a powerful platform for creating connected devices. Start with simple examples and gradually add complexity as you become familiar with the stack.
+
+In the next tutorial, we'll explore advanced topics like BLE Mesh networking and long-range (coded PHY) communication.

@@ -1,65 +1,127 @@
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import { Hero } from "@/components/hero";
+import { SectionHeading } from "@/components/section-heading";
+import { ProjectCard } from "@/components/project-card";
+import { Button } from "@/components/ui/button";
+
+const featuredProjects = [
+  {
+    title: "Elexy Power Unit",
+    description: "End-to-end validation for an electromechanical autoinjector. Ensured 100% requirements-to-test traceability.",
+    tags: ["Validation", "Medical Device", "Safety-Critical"],
+    image: "/images/electronics-exploded.png",
+    links: {},
+  },
+  {
+    title: "SmartHub",
+    description: "BLE data collector for connected health devices. Led system-level integration from prototyping to production.",
+    tags: ["BLE", "IoT", "System Integration"],
+    image: "/images/iot-system-diagram.png",
+    links: {},
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col">
+      <Hero />
+
+      {/* About Teaser */}
+      <section className="py-20 bg-muted/30 relative overflow-hidden">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-15 pointer-events-none hidden lg:block">
+          <Image
+            src="/images/electronics-exploded.png"
+            alt=""
+            width={450}
+            height={400}
+            className="object-contain"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <SectionHeading title="About Me" align="left" />
+          <div className="max-w-3xl">
+            <p className="text-xl text-muted-foreground mb-8 text-left leading-relaxed">
+              I'm Ratan Lal Bunkar, a Hardware Systems Engineer passionate about building robust embedded solutions.
+              I specialize in bridging the gap between hardware and software to create efficient, reliable systems.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/about">
+                <Button variant="outline" className="rounded-full">
+                  More About Me
+                </Button>
+              </Link>
+              <a href="/Hardware Systems Engineer.pdf" target="_blank" rel="noopener noreferrer">
+                <Button className="rounded-full">
+                  Download CV
+                </Button>
+              </a>
+              <Link href="/skills">
+                <Button variant="ghost" className="rounded-full group">
+                  View Skills <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-end mb-12">
+            <SectionHeading title="Featured Work" align="left" className="mb-0" />
+            <Link href="/projects" className="hidden md:block">
+              <Button variant="ghost" className="group">
+                View All Projects <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {featuredProjects.map((project, index) => (
+              <ProjectCard key={index} {...project} />
+            ))}
+          </div>
+
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/projects">
+              <Button variant="outline" className="w-full">
+                View All Projects
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-primary/5 border-t border-primary/10 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+            poster="/images/hero-circuit-layers.png"
+          >
+            <source src="/animations/engineering-visualization.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to collaborate?</h2>
+          <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
           </p>
+          <Link href="/contact">
+            <Button size="lg" className="rounded-full px-8 text-lg h-12">
+              Get in Touch
+            </Button>
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
     </div>
   );
 }

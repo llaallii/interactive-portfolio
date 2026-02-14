@@ -1,0 +1,176 @@
+---
+title: "Audio Noise Reduction Using Non-negative Matrix Factorization"
+date: "2024-01-28"
+category: "Research"
+tags: ["Signal Processing", "NMF", "Python", "Audio", "Machine Learning"]
+excerpt: "Exploring how Non-negative Matrix Factorization can be applied to separate clean audio signals from noisy backgrounds, with practical Python implementation."
+image: "/images/code-particles.png"
+published: true
+---
+
+Non-negative Matrix Factorization (NMF) is a powerful technique for audio source separation. In this article, we'll explore how to use NMF to reduce noise and isolate clean audio signals.
+
+## What is NMF?
+
+NMF decomposes a non-negative matrix V into two non-negative matrices W and H:
+
+```
+V ≈ W × H
+```
+
+Where:
+- **V** is the input spectrogram (frequency × time)
+- **W** is the basis matrix (frequency × components)
+- **H** is the activation matrix (components × time)
+
+## Why NMF for Audio?
+
+Audio spectrograms are naturally non-negative (magnitude values), making NMF an ideal choice:
+
+- **Parts-based representation**: Learns meaningful audio patterns
+- **Interpretable components**: Each basis vector represents a spectral template
+- **Additive nature**: Matches how audio signals combine
+
+## Implementation
+
+Let's implement NMF-based noise reduction in Python:
+
+```python
+import numpy as np
+import librosa
+from sklearn.decomposition import NMF
+
+def load_and_process_audio(filepath, sr=22050):
+    """Load audio and compute spectrogram."""
+    y, sr = librosa.load(filepath, sr=sr)
+
+    # Compute STFT
+    stft = librosa.stft(y, n_fft=2048, hop_length=512)
+    magnitude = np.abs(stft)
+    phase = np.angle(stft)
+
+    return magnitude, phase, sr
+
+def apply_nmf(magnitude, n_components=16):
+    """Apply NMF decomposition."""
+    model = NMF(
+        n_components=n_components,
+        init='nndsvd',
+        max_iter=500,
+        random_state=42
+    )
+
+    W = model.fit_transform(magnitude.T)
+    H = model.components_
+
+    return W, H.T, model
+
+def separate_sources(W, H, noise_components):
+    """Separate signal from noise based on component labels."""
+    # Create masks for signal and noise
+    signal_mask = np.ones(W.shape[1], dtype=bool)
+    signal_mask[noise_components] = False
+
+    # Reconstruct signal without noise components
+    W_signal = W[:, signal_mask]
+    H_signal = H[signal_mask, :]
+
+    return W_signal @ H_signal
+```
+
+## Identifying Noise Components
+
+The key challenge is identifying which NMF components represent noise:
+
+```python
+def analyze_components(W, H, sr=22050):
+    """Analyze NMF components to identify noise."""
+    n_components = W.shape[1]
+    scores = []
+
+    for i in range(n_components):
+        # Temporal variance (noise tends to be constant)
+        temporal_var = np.var(H[i, :])
+
+        # Spectral flatness (noise is spectrally flat)
+        spectral_flat = librosa.feature.spectral_flatness(
+            S=W[:, i].reshape(-1, 1)
+        ).mean()
+
+        # Energy (noise often has lower energy)
+        energy = np.sum(W[:, i] * H[i, :].mean())
+
+        scores.append({
+            'component': i,
+            'temporal_var': temporal_var,
+            'spectral_flatness': spectral_flat,
+            'energy': energy
+        })
+
+    return scores
+```
+
+## Results Visualization
+
+Visualizing the separation results:
+
+```python
+import matplotlib.pyplot as plt
+
+def plot_separation_results(original, cleaned, sr):
+    """Plot original vs cleaned spectrograms."""
+    fig, axes = plt.subplots(2, 1, figsize=(12, 8))
+
+    # Original
+    librosa.display.specshow(
+        librosa.amplitude_to_db(original),
+        sr=sr, hop_length=512,
+        x_axis='time', y_axis='hz',
+        ax=axes[0]
+    )
+    axes[0].set_title('Original (with noise)')
+
+    # Cleaned
+    librosa.display.specshow(
+        librosa.amplitude_to_db(cleaned),
+        sr=sr, hop_length=512,
+        x_axis='time', y_axis='hz',
+        ax=axes[1]
+    )
+    axes[1].set_title('After NMF Noise Reduction')
+
+    plt.tight_layout()
+    return fig
+```
+
+## Performance Metrics
+
+Evaluate separation quality using:
+
+| Metric | Description | Higher is Better |
+|--------|-------------|------------------|
+| SDR | Signal-to-Distortion Ratio | Yes |
+| SIR | Signal-to-Interference Ratio | Yes |
+| SAR | Signal-to-Artifacts Ratio | Yes |
+
+## Limitations and Considerations
+
+While powerful, NMF has some limitations:
+
+- **Component selection**: Manual identification of noise components can be subjective
+- **Computational cost**: Large spectrograms require significant processing time
+- **Non-stationarity**: Assumes relatively stable noise characteristics
+
+## Future Directions
+
+Recent advances combine NMF with deep learning:
+
+- **Deep NMF**: Using neural networks to learn W and H
+- **Supervised NMF**: Training on labeled clean/noisy pairs
+- **Online NMF**: Adapting to changing noise conditions in real-time
+
+## Conclusion
+
+NMF provides an elegant mathematical framework for audio source separation. While newer deep learning approaches often achieve better results, NMF remains valuable for its interpretability and computational efficiency on resource-constrained systems.
+
+*This research was published at ICSSE 2022. See the [full paper](https://ieeexplore.ieee.org/document/9948446) for detailed experimental results.*
